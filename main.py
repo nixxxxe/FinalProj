@@ -4,17 +4,19 @@ from users import create_user, get_users, get_user, update_user, delete_user
 from database import set_mysql
 import books
 from books import borrow_book 
+from flask import render_template
+
+app = Flask(__name__, template_folder='templates')
 import borrow_records
 
 
 
-app = Flask(__name__)
 
 # Required
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL-PORT"] = 3306
 app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "MD_avila.21"
+app.config["MYSQL_PASSWORD"] = "HDR*110302res"
 app.config["MYSQL_DB"] = "dblibrarymanagement"
 # Extra configs, optional but mandatory for this project:
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
@@ -28,7 +30,7 @@ set_mysql(mysql)
 
 @app.route("/")
 def home():
-    return jsonify({"message": "henlo!!!!"})
+    return render_template("index.html")
 
 @app.route("/users", methods=["GET", "POST"])
 def users():
@@ -41,7 +43,7 @@ def users():
     return jsonify({"id": user_id})
   else:
      users = get_users()
-     return jsonify(users)
+     return render_template("users.html", users=users)
     
 @app.route("/users/<int:id>", methods=["GET", "PUT", "DELETE"])
 def user(id):
@@ -80,7 +82,7 @@ def delete_book(book_id):
 @app.route("/books", methods=["GET"])
 def list_books():
     all_books = books.get_books()
-    return jsonify(all_books)
+    return render_template("books.html", books=all_books)
 
 @app.route("/books/<int:book_id>", methods=["GET"])
 def get_specific_book(book_id):

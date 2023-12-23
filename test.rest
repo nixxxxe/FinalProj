@@ -46,7 +46,7 @@ POST {{host}}/books
 Content-Type: application/json
 
 {
-    "title": "Engeriing book",
+    "title": "book book",
     "author": "Author Author",
     "isbn": "1234567"
 }
@@ -56,6 +56,8 @@ GET {{host}}/books
 Content-Type: application/json
 
 ### Update a Book
+PUT {{host}}/books/1 
+# Change the ID as needed
 PUT {{host}}/books/1 
 # Change the ID as needed
 Content-Type: application/json
@@ -84,8 +86,8 @@ POST {{host}}/borrow
 Content-Type: application/json
 
 {
-    "user_id": 16,
-    "book_id": 7
+    "user_id": 20,
+    "book_id": 8
 }
 
 ### Return a Book
@@ -101,3 +103,6 @@ Content-Type: application/json
 # Replace record_id with a valid value
 GET {{host}}/borrow_records/3
 Content-Type: application/json
+
+
+ 
