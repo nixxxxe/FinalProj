@@ -1,0 +1,74 @@
+@host=http://127.0.0.1:5000
+
+### Create an Item
+POST {{host}}/users
+Content-Type: application/json
+
+{
+    "name": "rwr",
+    "age": 23,
+    "department": "rawr",
+    "email": "try@.com",
+    "password": "123456"
+}
+
+
+### Read all items
+GET {{host}}/users
+Content-Type: application/json
+
+### Read single item by id
+### content-type in here is only optional
+GET {{host}}/users/10
+Content-Type: application/json 
+
+### Update an item
+PUT {{host}}/users/9
+Content-Type: application/json
+
+{
+    "name": "Doe",
+    "age": 20,
+    "department": "Student",
+    "email": "doe@.com",
+    "password": "doe"
+}
+
+
+### Delete an item
+### content-type in here is only optional
+DELETE {{host}}/users/8
+Content-Type: application/
+
+
+### Add a New Book
+POST {{host}}/books
+Content-Type: application/json
+
+{
+    "title": "Example Book",
+    "author": "Author Name",
+    "isbn": "1234567890123"
+}
+
+### Update a Book
+PUT {{host}}/books/1  # Change the ID as needed
+Content-Type: application/json
+
+{
+    "title": "Updated Example Book",
+    "author": "Updated Author Name",
+    "isbn": "1234567890124"
+}
+
+### Delete a Book
+DELETE {{host}}/books/1  # Change the ID as needed
+Content-Type: application/json
+
+### List All Books
+GET {{host}}/books
+Content-Type: application/json
+
+### Get Specific Book
+GET {{host}}/books/1  # Change the ID as needed
+Content-Type: application/json
