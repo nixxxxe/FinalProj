@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional CSS for adjusting form width */
+        #addUserForm {
+            max-width: 300px; /* Adjust the maximum width of the form */
+            /* margin-right: auto; /* Center the form horizontally */
+            /* margin-left: auto; */
+        }
+
+        /* Custom CSS for table buttons */
+        .table .btn {
+            padding: 0.25rem 0.5rem; /* Adjust button padding */
+            font-size: 0.875rem; /* Adjust button font size */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Users Management</h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+            <!-- Add User Form -->
+            <div class="mb-3">
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" placeholder="Enter Age">
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Loop through users data and populate the table rows -->
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.age }}</td>
+                    <td>{{ user.department }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-warning editUserBtn">Edit</button>
+                        <button type="button" class="btn btn-sm btn-danger deleteUserBtn">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript for User Management -->
+    <script>
+         // Function to update the user table
+         function updateUserTable(users) {
+        var tableBody = $('table tbody');
+        tableBody.empty(); // Clear existing table rows
+
+        users.forEach(function (user) {
+            var row = '<tr>' +
+                '<td>' + user.id + '</td>' +
+                '<td>' + user.name + '</td>' +
+                '<td>' + user.age + '</td>' +
+                '<td>' + user.department + '</td>' +
+                '<td>' + user.email + '</td>' +
+                '<td>' + user.password + '</td>' +
+                '<td>' +
+                '<button type="button" class="btn btn-sm btn-warning editUserBtn">Edit</button>' +
+                '<button type="button" class="btn btn-sm btn-danger deleteUserBtn">Delete</button>' +
+                '</td>' +
+                '</tr>';
+            tableBody.append(row); // Append new row to the table
+        });
+    }
+
+    // AJAX POST request to add a new user
+    $('#addUserForm').submit(function (event) {
+        event.preventDefault();
+        var userData = {
+            name: $('#name').val(),
+            age: $('#age').val(),
+            department: $('#department').val(),
+            email: $('#email').val(),
+            password: $('#password').val()
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/users',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: function (response) {
+                console.log('User added successfully:', response);
+                // Fetch the newly added user details by ID
+                $.ajax({
+                    type: 'GET',
+                    url: '/users/' + response.id, // Replace with the appropriate endpoint
+                    success: function (user) {
+                        // Update the table with the retrieved user details
+                        updateUserTable([user]); // Assuming updateUserTable expects an array
+                        $('#addUserForm')[0].reset(); // Reset the form after adding the user
+                    },
+                    error: function (error) {
+                        console.error('Error fetching user details:', error);
+                    }
+                });
+            },
+            error: function (error) {
+                console.error('Error adding user:', error);
+            }
+        });
+    });
+
+// Function to update the user table
+function updateUserTable(users) {
+    var tableBody = $('#userTableBody');
+    users.forEach(function (user) {
+        var row = '<tr>' +
+            '<td>' + user.id + '</td>' +
+            '<td>' + user.name + '</td>' +
+            '<td>' + user.age + '</td>' +
+            '<td>' + user.department + '</td>' +
+            '<td>' + user.email + '</td>' +
+            '<td>' + user.password + '</td>' +
+            '<td>' +
+            '<button type="button" class="btn btn-sm btn-warning editUserBtn">Edit</button>' +
+            '<button type="button" class="btn btn-sm btn-danger deleteUserBtn">Delete</button>' +
+            '</td>' +
+            '</tr>';
+        tableBody.append(row); // Append new row to the table
+    });
+}
+
+
+
+
+
+        // Function to fetch user details and populate the form for editing
+    function editUser(userId) {
+        // Perform actions to retrieve user details based on the user ID
+        // Make an AJAX GET request to fetch user details from Flask
+        $.ajax({
+            type: 'GET',
+            url: '/users/' + userId, // Use the appropriate endpoint to fetch user details by ID
+            success: function(user) {
+                // Populate form fields with user details for editing
+                $('#name').val(user.name);
+                $('#age').val(user.age);
+                $('#department').val(user.department);
+                $('#email').val(user.email);
+                $('#password').val(user.password);
+
+                // Update the submit button of the form for editing
+                $('#addUserForm').off('submit'); // Remove previous submit event handler
+                $('#addUserForm').submit(function(event) {
+                    event.preventDefault();
+                    var updatedUserData = {
+                        name: $('#name').val(),
+                        age: $('#age').val(),
+                        department: $('#department').val(),
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                    };
+                    // Make an AJAX PUT request to update the user details in Flask
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/users/' + userId, // Use the appropriate endpoint for updating user data
+                        contentType: 'application/json',
+                        data: JSON.stringify(updatedUserData), // Pass updated user data
+                        success: function(response) {
+                            console.log('User updated successfully:', response);
+                            // Update the user table after updating the user
+                            $.get('/users', function (users) {
+                                updateUserTable(users);
+                            });
+                            // Reset the form after successful update
+                            $('#addUserForm')[0].reset();
+                        },
+                        error: function(error) {
+                            console.error('Error updating user:', error);
+                        }
+                    });
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching user details for editing:', error);
+            }
+        });
+    }
+
+    // Edit User Functionality
+    $(document).on('click', '.editUserBtn', function() {
+        var userId = $(this).closest('tr').find('td:first').text(); // Get user ID from the table row
+        editUser(userId); // Call the editUser function to fetch and populate user details
+    });
+
+
+    // Delete User Functionality
+    $(document).on('click', '.deleteUserBtn', function() {
+        var userId = $(this).closest('tr').find('td:first').text(); // Get user ID from the table row
+
+        // Save the reference to the table row for removal after successful delete
+        var rowToRemove = $(this).closest('tr');
+
+        // Make an AJAX DELETE request to delete the user in Flask
+        $.ajax({
+            type: 'DELETE',
+            url: '/users/' + userId, // Use the appropriate endpoint
+            success: function(response) {
+                // Handle success response (optional)
+                console.log('User deleted successfully:', response);
+                // Remove the associated row from the table upon successful delete
+                rowToRemove.remove();
+            },
+            error: function(error) {
+                // Handle error response (optional)
+                console.error('Error deleting user:', error);
+            }
+        });
+    });
+
+    </script>
+</body>
+</html> 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Borrow Records</title>
+    <!-- Bootstrap CSS or other styles -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Additional CSS if needed -->
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>List of Borrow Records</h1>
+        <hr>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User ID</th>
+                    <th>Book ID</th>
+                    <th>Borrow Date</th>
+                    <th>Return Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in borrow_records %}
+                <tr>
+                    <td>{{ record.id }}</td>
+                    <td>{{ record.user_id }}</td>
+                    <td>{{ record.book_id }}</td>
+                    <td>{{ record.borrow_date }}</td>
+                    <td>{{ record.return_date }}</td>
+                    <td>
+                        {% if record.return_date is none %}
+                        <form action="/return/{{ record.book_id }}" method="post" class="d-inline-block">
+                            <button type="submit" class="btn btn-sm btn-success">Return Book</button>
+                        </form>
+                        {% endif %}
+                        <form action="/borrow_records/{{ record.id }}/delete" method="post" class="d-inline-block">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete Record</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Other content or buttons -->
+    </div>
+
+    <!-- Bootstrap JS or other scripts -->
+</body>
+
+</html>

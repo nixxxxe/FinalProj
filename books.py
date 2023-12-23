@@ -16,7 +16,7 @@ def delete_book(book_id):
     query = "DELETE FROM books WHERE id = %s"
     params = (book_id,)
     execute(query, params)
-    return book_id
+    
 
 def get_books():
     query = "SELECT * FROM books"

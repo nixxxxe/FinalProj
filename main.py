@@ -1,10 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, redirect, request
 from flask_mysqldb import MySQL
 from users import create_user, get_users, get_user, update_user, delete_user
 from database import set_mysql
 import books
 from books import borrow_book 
+from books import get_book, update_book
+from borrow_records import get_borrow_records
 from flask import render_template
+from flask import redirect
 
 app = Flask(__name__, template_folder='templates')
 import borrow_records
@@ -16,7 +19,7 @@ import borrow_records
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL-PORT"] = 3306
 app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "HDR*110302res"
+app.config["MYSQL_PASSWORD"] = "MD_avila.21"
 app.config["MYSQL_DB"] = "dblibrarymanagement"
 # Extra configs, optional but mandatory for this project:
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
@@ -69,14 +72,14 @@ def add_book():
     return jsonify({"id": book_id})
 
 @app.route("/books/<int:book_id>", methods=["PUT"])
-def update_book(book_id):
+def update_book_handler(book_id):
     data = request.get_json()
     updated_id = books.update_book(book_id, data["title"], data["author"], data["isbn"])
     return jsonify({"id": updated_id})
 
 @app.route("/books/<int:book_id>", methods=["DELETE"])
-def delete_book(book_id):
-    deleted_id = books.delete_book(book_id)
+def delete_boook(book_id):
+    deleted_id = books.delete_boook(book_id)
     return jsonify({"id": deleted_id})
 
 @app.route("/books", methods=["GET"])
@@ -91,19 +94,6 @@ def get_specific_book(book_id):
         return jsonify(book)
     else:
         return jsonify({"error": "Book not found"})
-
-
-#@app.route("/borrow", methods=["POST"])
-#def borrow_book_route():
-#   data = request.get_json()
-#    user_id = data.get("user_id")
-#    book_id = data.get("book_id")
-
-    # Call the borrow_book function from books.py with user_id and book_id
-#    borrowed_book = borrow_book(user_id, book_id)
-
-    # Return the borrowed book's details in the response
-#    return jsonify({"message": "Book borrowed successfully!", "book_details": borrowed_book})
     
 @app.route("/borrow", methods=["POST"])
 def borrow():
@@ -128,3 +118,53 @@ def view_borrow_record(record_id):
         return jsonify(record)
     else:
         return jsonify({"error": "Borrow record not found"}), 404
+    
+@app.route("/add-book", methods=["GET"])
+def add_book_page():
+    return render_template("addBook.html")
+
+@app.route("/books/<int:book_id>/edit", methods=["GET"])
+def edit_book_page(book_id):
+    book = get_book(book_id)  # Fetch book details based on the book_id
+    return render_template("editBook.html", book=book)  # Pass book details to pre-fill the form
+
+@app.route("/books/<int:book_id>/update", methods=["POST"])
+def update_book_route(book_id):
+    # Get the updated book details from the form
+    updated_title = request.form.get("title")
+    updated_author = request.form.get("author")
+    updated_isbn = request.form.get("isbn")
+
+    # Update the book details in the database
+    updated_id = update_book(book_id, updated_title, updated_author, updated_isbn)
+    
+    # Redirect to the book details page after updating
+    return redirect(f"/books")
+
+
+@app.route("/books/<int:book_id>/delete", methods=["POST"])
+def delete_book_route(book_id):
+    # Perform deletion of the book from the database using the book_id
+    books.delete_book(book_id)
+
+    # Redirect to the page displaying the list of books after deletion
+    return redirect("/books")
+
+@app.route("/borrow-book")
+def borrow_page():
+    # You might fetch borrow records data here if needed
+    # Fetch borrow records data (assuming you have a function to retrieve it)
+    borrow_records = get_borrow_records()  # This fetches the data from your database
+    # Then render the borrow_records.html template
+    return render_template("borrowRecords.html")
+
+# @app.route("/return/<int:book_id>", methods=["POST"])
+# def return_book(book_id):
+#    result = return_book(book_id)
+#    return jsonify(result)
+
+# @app.route("/borrow_records/<int:record_id>/delete", methods=["POST"])
+# def delete_borrow_record(record_id):
+#    deleted_id = delete_borrow_record(record_id)
+#    return jsonify({"id": deleted_id})
+
