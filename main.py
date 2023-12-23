@@ -5,9 +5,12 @@ from database import set_mysql
 import books
 from books import borrow_book 
 from flask import render_template
+import borrow_records
+from users import validate_user_credentials
+from flask import redirect, url_for
 
 app = Flask(__name__, template_folder='templates')
-import borrow_records
+
 
 
 # Required
@@ -25,10 +28,10 @@ mysql = MySQL(app)
 #to call set the mysql and pass mysql in the database.py, like a connector
 set_mysql(mysql)
 
-
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/users", methods=["GET", "POST"])
 def users():

@@ -118,7 +118,7 @@
         });
     }
 
-        // AJAX POST request to add a new user
+    // AJAX POST request to add a new user
     $('#addUserForm').submit(function (event) {
         event.preventDefault();
         var userData = {
@@ -135,9 +135,18 @@
             data: JSON.stringify(userData),
             success: function (response) {
                 console.log('User added successfully:', response);
-                // Update the table after adding the user
-                $.get('/users', function (users) {
-                    updateUserTable(users);
+                // Fetch the newly added user details by ID
+                $.ajax({
+                    type: 'GET',
+                    url: '/users/' + response.id, // Replace with the appropriate endpoint
+                    success: function (user) {
+                        // Update the table with the retrieved user details
+                        updateUserTable([user]); // Assuming updateUserTable expects an array
+                        $('#addUserForm')[0].reset(); // Reset the form after adding the user
+                    },
+                    error: function (error) {
+                        console.error('Error fetching user details:', error);
+                    }
                 });
             },
             error: function (error) {
@@ -145,6 +154,29 @@
             }
         });
     });
+
+// Function to update the user table
+function updateUserTable(users) {
+    var tableBody = $('#userTableBody');
+    users.forEach(function (user) {
+        var row = '<tr>' +
+            '<td>' + user.id + '</td>' +
+            '<td>' + user.name + '</td>' +
+            '<td>' + user.age + '</td>' +
+            '<td>' + user.department + '</td>' +
+            '<td>' + user.email + '</td>' +
+            '<td>' + user.password + '</td>' +
+            '<td>' +
+            '<button type="button" class="btn btn-sm btn-warning editUserBtn">Edit</button>' +
+            '<button type="button" class="btn btn-sm btn-danger deleteUserBtn">Delete</button>' +
+            '</td>' +
+            '</tr>';
+        tableBody.append(row); // Append new row to the table
+    });
+}
+
+
+
 
 
         // Function to fetch user details and populate the form for editing
@@ -207,9 +239,12 @@
     });
 
 
-        // Delete User Functionality
-    $('.deleteUserBtn').click(function() {
+    // Delete User Functionality
+    $(document).on('click', '.deleteUserBtn', function() {
         var userId = $(this).closest('tr').find('td:first').text(); // Get user ID from the table row
+
+        // Save the reference to the table row for removal after successful delete
+        var rowToRemove = $(this).closest('tr');
 
         // Make an AJAX DELETE request to delete the user in Flask
         $.ajax({
@@ -218,10 +253,8 @@
             success: function(response) {
                 // Handle success response (optional)
                 console.log('User deleted successfully:', response);
-                // Update the table after deleting the user
-                $.get('/users', function (users) {
-                    updateUserTable(users);
-                });
+                // Remove the associated row from the table upon successful delete
+                rowToRemove.remove();
             },
             error: function(error) {
                 // Handle error response (optional)
@@ -229,7 +262,9 @@
             }
         });
     });
+
     </script>
 </body>
+</html>
 
-</html> 
+

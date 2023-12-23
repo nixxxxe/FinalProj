@@ -1,5 +1,11 @@
 from database import fetchone, fetchall
 
+def validate_user_credentials(email, password):
+    query = "SELECT * FROM users WHERE email = %s AND password = %s"
+    params = (email, password)
+    user = fetchone(query, params)
+    return user
+
 def create_user(name, age, department, email, password):
   username = email
   query = "CALL create_user(%s, %s, %s, %s, %s, %s)"

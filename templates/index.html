@@ -3,13 +3,47 @@
 <head>
     <title>Library Management System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dashboard-panel {
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center my-4">Library Management System</h1>
-        <div class="text-center">
-            <a href="/users" class="btn btn-primary">Manage Users</a>
-            <a href="/books" class="btn btn-secondary">Manage Books</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Library System</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books">Books</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome to the Library Management Dashboard</h1>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="dashboard-panel bg-primary text-white text-center">
+                    <h2>Users</h2>
+                    <p>Manage library members and user accounts</p>
+                    <a href="/users" class="btn btn-light">Go to Users</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-panel bg-secondary text-white text-center">
+                    <h2>Books</h2>
+                    <p>Manage books, lending, and book records</p>
+                    <a href="/books" class="btn btn-light">Go to Books</a>
+                </div>
+            </div>
         </div>
     </div>
 </body>

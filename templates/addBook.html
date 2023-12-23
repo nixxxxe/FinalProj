@@ -1,0 +1,107 @@
+<!-- add_book.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Add a Book</h1>
+        <hr>
+        <form id="addBookForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" name="author" placeholder="Enter Author" required>
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Enter ISBN" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#addBookForm').submit(function(event) {
+                event.preventDefault();
+                // Get input values
+                var title = $('#title').val();
+                var author = $('#author').val();
+                var isbn = $('#isbn').val();
+
+                // Send book details to backend to add a book
+                $.ajax({
+                    type: 'POST',
+                    url: '/books', // Endpoint to add a book
+                    contentType: 'application/json',
+                    data: JSON.stringify({ title: title, author: author, isbn: isbn }),
+                    success: function(response) {
+                        // Redirect to the book listing page after adding the book
+                        window.location.href = '/books';
+                    },
+                    error: function(error) {
+                        console.error('Error adding book:', error);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+    var bookId = window.location.pathname.split('/').pop(); // Extract book ID from URL
+    if (bookId === 'add_book') {
+        // This is for adding a new book
+        $('#addBookForm').submit(function(event) {
+            // ... (existing logic for adding a new book)
+        });
+    } else {
+        // This is for editing an existing book
+        // Fetch book details and pre-fill the form
+        $.get(/books/${bookId}, function(book) {
+            $('#title').val(book.title);
+            $('#author').val(book.author);
+            $('#isbn').val(book.isbn);
+        });
+
+        // Update the book details upon form submission
+        $('#addBookForm').submit(function(event) {
+            event.preventDefault();
+            var title = $('#title').val();
+            var author = $('#author').val();
+            var isbn = $('#isbn').val();
+
+            // Send updated book details to the backend
+            $.ajax({
+                type: 'PUT',
+                url: /books/${bookId}/update, // Endpoint to update book details
+                contentType: 'application/json',
+                data: JSON.stringify({ title: title, author: author, isbn: isbn }),
+                success: function(response) {
+                    // Redirect to the book listing page after updating the book
+                    window.location.href = '/books';
+                },
+                error: function(error) {
+                    console.error('Error updating book:', error);
+                }
+            });
+        });
+    }
+});
+
+
+
+    </script>
+</body>
+
+</html>
