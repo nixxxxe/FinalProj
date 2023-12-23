@@ -5,10 +5,10 @@ POST {{host}}/users
 Content-Type: application/json
 
 {
-    "name": "rwr",
-    "age": 23,
-    "department": "rawr",
-    "email": "try@.com",
+    "name": "John",
+    "age": 22,
+    "department": "BSCE",
+    "email": "john@.com",
     "password": "123456"
 }
 
@@ -19,17 +19,17 @@ Content-Type: application/json
 
 ### Read single item by id
 ### content-type in here is only optional
-GET {{host}}/users/10
+GET {{host}}/users/16
 Content-Type: application/json 
 
 ### Update an item
-PUT {{host}}/users/9
+PUT {{host}}/users/14
 Content-Type: application/json
 
 {
     "name": "Doe",
     "age": 20,
-    "department": "Student",
+    "department": "BSIT",
     "email": "doe@.com",
     "password": "doe"
 }
@@ -37,7 +37,7 @@ Content-Type: application/json
 
 ### Delete an item
 ### content-type in here is only optional
-DELETE {{host}}/users/8
+DELETE {{host}}/users/15
 Content-Type: application/
 
 
@@ -46,13 +46,18 @@ POST {{host}}/books
 Content-Type: application/json
 
 {
-    "title": "Example Book",
-    "author": "Author Name",
-    "isbn": "1234567890123"
+    "title": "Engeriing book",
+    "author": "Author Author",
+    "isbn": "1234567"
 }
 
+### List All Books
+GET {{host}}/books
+Content-Type: application/json
+
 ### Update a Book
-PUT {{host}}/books/1  # Change the ID as needed
+PUT {{host}}/books/1 
+# Change the ID as needed
 Content-Type: application/json
 
 {
@@ -62,13 +67,37 @@ Content-Type: application/json
 }
 
 ### Delete a Book
-DELETE {{host}}/books/1  # Change the ID as needed
+DELETE {{host}}/books/4
+# Change the ID as needed
 Content-Type: application/json
 
-### List All Books
-GET {{host}}/books
-Content-Type: application/json
 
 ### Get Specific Book
-GET {{host}}/books/1  # Change the ID as needed
+GET {{host}}/books/7
+# Change the ID as needed
+Content-Type: application/json
+
+
+### Borrow a Book
+# Replace user_id and book_id with valid values
+POST {{host}}/borrow
+Content-Type: application/json
+
+{
+    "user_id": 16,
+    "book_id": 7
+}
+
+### Return a Book
+# Replace book_id with a valid value
+POST {{host}}/return/2
+Content-Type: application/json
+
+### View All Borrow Records
+GET {{host}}/borrow_records
+Content-Type: application/json
+
+### View Specific Borrow Record
+# Replace record_id with a valid value
+GET {{host}}/borrow_records/3
 Content-Type: application/json

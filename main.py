@@ -4,6 +4,9 @@ from users import create_user, get_users, get_user, update_user, delete_user
 from database import set_mysql
 import books
 from books import borrow_book 
+import borrow_records
+
+
 
 app = Flask(__name__)
 
@@ -82,16 +85,44 @@ def list_books():
 @app.route("/books/<int:book_id>", methods=["GET"])
 def get_specific_book(book_id):
     book = books.get_book(book_id)
-    return jsonify(book)
+    if book:
+        return jsonify(book)
+    else:
+        return jsonify({"error": "Book not found"})
 
-@app.route("/borrow", methods=["POST"])
-def borrow_book_route():
-    data = request.get_json()
-    user_id = data.get("user_id")
-    book_id = data.get("book_id")
+
+#@app.route("/borrow", methods=["POST"])
+#def borrow_book_route():
+#   data = request.get_json()
+#    user_id = data.get("user_id")
+#    book_id = data.get("book_id")
 
     # Call the borrow_book function from books.py with user_id and book_id
-    borrowed_book = borrow_book(user_id, book_id)
+#    borrowed_book = borrow_book(user_id, book_id)
 
     # Return the borrowed book's details in the response
-    return jsonify({"message": "Book borrowed successfully!", "book_details": borrowed_book})
+#    return jsonify({"message": "Book borrowed successfully!", "book_details": borrowed_book})
+    
+@app.route("/borrow", methods=["POST"])
+def borrow():
+    data = request.get_json()
+    result = borrow_records.borrow_book(data["user_id"], data["book_id"])
+    return jsonify(result)
+
+@app.route("/return/<int:book_id>", methods=["POST"])
+def return_book(book_id):
+    result = borrow_records.return_book(book_id)
+    return jsonify(result)
+
+@app.route("/borrow_records", methods=["GET"])
+def view_borrow_records():
+    records = borrow_records.get_borrow_records()
+    return jsonify(records)
+
+@app.route("/borrow_records/<int:record_id>", methods=["GET"])
+def view_borrow_record(record_id):
+    record = borrow_records.get_borrow_record(record_id)
+    if record:
+        return jsonify(record)
+    else:
+        return jsonify({"error": "Borrow record not found"}), 404
