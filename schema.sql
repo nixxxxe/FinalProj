@@ -115,7 +115,7 @@ END$$
 DELIMITER ;
 
 -- Procedure: borrow_book
-DELIMITER $$
+/*DELIMITER $$
 CREATE PROCEDURE borrow_book(IN user_id int, IN book_id int)
 BEGIN
   IF (SELECT available FROM books WHERE id = book_id) THEN
@@ -132,6 +132,23 @@ BEGIN
   UPDATE books SET available = TRUE WHERE id = book_id;
   UPDATE borrow_records SET return_date = NOW() WHERE book_id = book_id AND return_date IS NULL;
 END$$
+DELIMITER ; */
+
+DELIMITER $$
+
+CREATE PROCEDURE borrow_book(IN p_user_id INT, IN p_book_id INT)
+BEGIN
+    INSERT INTO borrow_records (user_id, book_id, borrow_date)
+    VALUES (p_user_id, p_book_id, NOW());
+END$$
+
+CREATE PROCEDURE return_book(IN p_book_id INT)
+BEGIN
+    UPDATE borrow_records
+    SET return_date = NOW()
+    WHERE book_id = p_book_id AND return_date IS NULL;
+END$$
+
 DELIMITER ;
 
 -- SQL Triggers
