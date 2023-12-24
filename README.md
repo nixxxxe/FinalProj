@@ -20,8 +20,12 @@ This project is the result of the collaborative efforts of the following individ
 
 - User management: Add, update, and delete users.
 - Book management: Add, update, and delete books.
-- Borrowing system: Users can borrow and return books.
+- Borrowing system: Users can borrow and return books. 
 - Real-time updates: Front-end updates without page reloads.
+
+## Current Status
+
+As of now, the back-end functionalities, including the REST API for user and book management, are operational. The borrowing system is also implemented in the back-end. However, the front-end is still in the development phase and might contain errors or incomplete features. We are actively working on refining the front-end to provide a seamless user experience.
 
 ## Installation
 
