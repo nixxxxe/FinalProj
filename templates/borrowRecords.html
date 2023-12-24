@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Borrow a Book</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Borrow a Book</h1>
+            </div>
+        </div>
+        <hr>
+        <!-- Borrow Book Form -->
+        <form id="borrowForm" action="/borrow" method="post" onsubmit="prepareAndSubmitForm(event)">
+            <div class="form-group">
+                <label for="book_id">Select a Book:</label>
+                <select class="form-control" id="book_id" name="book_id">
+                    <!-- Books will be populated here using JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="user_id">Your User ID:</label>
+                <input type="text" class="form-control" id="user_id" name="user_id">
+            </div>
+            <!-- Add a hidden input field to store JSON data -->
+            <input type="hidden" id="jsonData" name="jsonData">
+            <button type="submit" class="btn btn-primary">Borrow</button>
+        </form>
+        
+        <!-- Other content can be added here -->
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+            function prepareAndSubmitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Create a FormData object with the form data
+            var formData = new FormData(document.getElementById("borrowForm"));
+
+            // Send a POST request with the FormData object
+            fetch("/borrow", {
+                method: "POST",
+                body: formData,
+            })
+                .then(function (response) {
+                    // Handle the response here
+                    if (response.status === 200) {
+                        // The request was successful, show a success alert
+                        alert("Book borrowed successfully!");
+                        // You can also redirect the user to another page if needed
+                        // window.location.href = "/success-page";
+                    } else {
+                        // Handle errors and show an error alert
+                        alert("Error: Unable to borrow the book. Please try again later.");
+                    }
+                })
+                .catch(function (error) {
+                    // Handle network errors and show an error alert
+                    alert("Network error: Unable to complete the request. Please check your internet connection.");
+                });
+        }
+
+
+
+        // Function to populate the book dropdown with available books
+        function populateBookDropdown() {
+            // Make an AJAX request to fetch available books
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/available_books", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    var bookDropdown = document.getElementById("book_id");
+                    // Clear existing options
+                    bookDropdown.innerHTML = "";
+                    // Iterate through the book data and populate the dropdown
+                    data.forEach(function (book) {
+                        var option = document.createElement("option");
+                        option.value = book.id;
+                        option.text = book.title;
+                        bookDropdown.appendChild(option);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        // Call the populateBookDropdown function when the page loads
+        window.onload = function () {
+            populateBookDropdown();
+        };
+    </script>
+</body>
+</html>

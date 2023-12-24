@@ -114,7 +114,27 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Procedure: borrow_book
+CREATE TABLE `books` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `isbn` varchar(20) NOT NULL,
+  `available` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `borrow_records` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `borrow_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `return_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES users(`id`),
+  FOREIGN KEY (`book_id`) REFERENCES books(`id`)
+) ENGINE=InnoDB;
+
+
 /*DELIMITER $$
 CREATE PROCEDURE borrow_book(IN user_id int, IN book_id int)
 BEGIN

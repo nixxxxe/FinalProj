@@ -68,7 +68,7 @@
     } else {
         // This is for editing an existing book
         // Fetch book details and pre-fill the form
-        $.get(/books/${bookId}, function(book) {
+        $.get(`/books/${bookId}`, function(book) {
             $('#title').val(book.title);
             $('#author').val(book.author);
             $('#isbn').val(book.isbn);
@@ -84,7 +84,7 @@
             // Send updated book details to the backend
             $.ajax({
                 type: 'PUT',
-                url: /books/${bookId}/update, // Endpoint to update book details
+                url: `/books/${bookId}/update`, // Endpoint to update book details
                 contentType: 'application/json',
                 data: JSON.stringify({ title: title, author: author, isbn: isbn }),
                 success: function(response) {

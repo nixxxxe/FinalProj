@@ -46,7 +46,7 @@ POST {{host}}/books
 Content-Type: application/json
 
 {
-    "title": "Engeriing book",
+    "title": "book book",
     "author": "Author Author",
     "isbn": "1234567"
 }
@@ -58,6 +58,8 @@ Content-Type: application/json
 ### Update a Book
 PUT {{host}}/books/1 
 # Change the ID as needed
+PUT {{host}}/books/1 
+# Change the ID as needed
 Content-Type: application/json
 
 {
@@ -67,7 +69,7 @@ Content-Type: application/json
 }
 
 ### Delete a Book
-DELETE {{host}}/books/1
+DELETE {{host}}/books/4
 # Change the ID as needed
 Content-Type: application/json
 
@@ -84,8 +86,8 @@ POST {{host}}/borrow
 Content-Type: application/json
 
 {
-    "user_id": 16,
-    "book_id": 7
+    "user_id": 20,
+    "book_id": 8
 }
 
 ### Return a Book
