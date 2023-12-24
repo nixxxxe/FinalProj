@@ -32,28 +32,28 @@ As of now, the back-end functionalities, including the REST API for user and boo
 To get this project up and running, you'll need to follow these steps:
 
 1. **Clone the repository:**
-- git clone https://github.com/nixxxxe/FinalProj.git
-- cd FinalProj
+git clone https://github.com/nixxxxe/FinalProj.git
+cd FinalProj
 
 2. **Set up a virtual environment (optional but recommended):**
-- python -m venv venv
-- source venv/bin/activate # On Windows use 'venv\Scripts\activate'
+python -m venv venv
+source venv/bin/activate #
+On Windows use 'venv\Scripts\activate'
 
 3. **Install the requirements:**
-- pip install -r requirements.txt
+pip install -r requirements.txt
 
 4. **Set up MySQL:**
-- Create a new MySQL database.
-- Import the `schema.sql` file.
+Create a new MySQL database.
+Import the `schema.sql` file.
 5. **Configure the application:**
-- Edit the `main.py` file to set your database credentials.
+Edit the `main.py` file to set your database credentials.
 
 ## Usage
 
 To run the application:
-- flask --app main run --debug
-
-
+- flask --app main run
+  
 Navigate to `http://localhost:5000` in your web browser to view the application.
 
 ## Contributing
