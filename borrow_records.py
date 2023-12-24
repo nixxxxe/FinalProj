@@ -1,5 +1,6 @@
 from database import execute, fetchone, fetchall
 
+
 def borrow_book(user_id, book_id):
     query = "CALL borrow_book(%s, %s)"
     params = (user_id, book_id)

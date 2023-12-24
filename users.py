@@ -1,4 +1,5 @@
 from database import fetchone, fetchall
+from database import execute
 
 def validate_user_credentials(email, password):
     query = "SELECT * FROM users WHERE email = %s AND password = %s"
@@ -36,3 +37,8 @@ def delete_user(id):
   params = (id,)
   result = fetchone(query, params)
   return result["id"]
+
+def update_user_is_borrowing(user_id, is_borrowing):
+    query = "UPDATE users SET is_borrowing = %s WHERE id = %s"
+    params = (is_borrowing, user_id)
+    execute(query, params)
