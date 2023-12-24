@@ -8,6 +8,14 @@
 
 A simple yet powerful library management system built with Flask, MySQL, and a straightforward HTML/CSS/JavaScript front end. This project demonstrates a full-stack application that allows users to manage books and user records efficiently.
 
+## Team Members
+
+This project is the result of the collaborative efforts of the following individuals:
+
+- **[Marc Denisse Avila](https://github.com/nixxxxe)** - _Project Lead_
+- **[Hannah Restauro](https://github.com/hanako0311)** - _Member_
+
+
 ## Features
 
 - User management: Add, update, and delete users.
