@@ -72,5 +72,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 Project Link: [https://github.com/nixxxxe/FinalProj](https://github.com/nixxxxe/FinalProj)
-
-
