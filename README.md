@@ -12,8 +12,8 @@ A simple yet powerful library management system built with Flask, MySQL, and a s
 
 This project is the result of the collaborative efforts of the following individuals:
 
-- **[Marc Denisse Avila](https://github.com/nixxxxe)** - _Member_
-- **[Hannah Restauro](https://github.com/hanako0311)** - _Member_
+- **[Marc Denisse Avila](https://github.com/nixxxxe)** 
+- **[Hannah Restauro](https://github.com/hanako0311)**
 
 
 ## Features
