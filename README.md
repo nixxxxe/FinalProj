@@ -39,7 +39,7 @@ To get this project up and running, you'll need to follow these steps:
 ## Usage
 
 To run the application:
-- flask run
+- flask --app main run --debug
 
 
 Navigate to `http://localhost:5000` in your web browser to view the application.
@@ -59,9 +59,6 @@ Contributions are what make the open-source community such an amazing place to l
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
-
 Project Link: [https://github.com/nixxxxe/FinalProj](https://github.com/nixxxxe/FinalProj)
 
 
